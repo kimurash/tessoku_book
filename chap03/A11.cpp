@@ -14,6 +14,7 @@ int main(){
     rep(i, 0, N){ cin >> A.at(i); }
 
     sort(all(A));
+
     int left = 0, middle, right = N-1;
     while(left <= right){
         middle = (left + right) / 2;

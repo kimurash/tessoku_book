@@ -18,7 +18,7 @@ int main(){
         while(R < N && A[R] - A[i] <= K){
             R++;
         }
-        count += R - i - 1;
+        count += R - (i + 1);
     }
 
     cout << count << endl;
