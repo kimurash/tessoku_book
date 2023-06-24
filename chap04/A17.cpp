@@ -14,7 +14,8 @@ int main(){
     rep(i, 2, N){ cin >> B[i]; }
 
     int32_t path1, path2;
-    int32_t travel[N] = {0}, backptr[N] = {0};
+    int32_t travel[N]  = {0};
+    int32_t backptr[N] = {0};
 
     travel[1] = A[1];
     rep(i, 2, N){
@@ -22,22 +23,24 @@ int main(){
         path2 = travel[i-2] + B[i];
         if(path1 < path2){
             travel[i] = path1;
-            backptr[i] = i-1;
+            backptr[i] = i - 1;
         } else{
             travel[i] = path2;
-            backptr[i] = i-2;
+            backptr[i] = i - 2;
         }
     }
 
-    int32_t room = N - 1;
+    N -= 1;
     stack<int32_t> optpath;
-    while(room > 0){
-        optpath.push(room);
-        room = backptr[room];
+    while(N > 0){
+        optpath.push(N);
+        N = backptr[N];
     }
 
     cout << optpath.size() + 1 << endl;
 
+    // 1だけスタックに格納されない
+    // 空白の制御が楽になる
     cout << 1;
     while(!optpath.empty()){
         printf(" %d", optpath.top() + 1);
