@@ -14,6 +14,7 @@ int main(){
     rep(i, 1, N+1){ cin >> A[i]; }
 
     bool able[N+1][S+1]; // i番目までのカードを使ってjを作れるか
+
     able[0][0] = true;
     rep(j, 1, S + 1){ able[0][j] = false; }
 
@@ -27,9 +28,28 @@ int main(){
         }
     }
 
-    if(able[N][S]){
-        cout << "Yes" << endl;
-    } else{
-        cout << "No" << endl;
+    if(!able[N][S]){
+        cout << -1 << endl;
+        return(0);
     }
+
+    int32_t sum = S;
+    stack<int32_t> cardnum;
+    for(int i = N; i > 0 && sum > 0; i--){
+        if(!able[i-1][sum]){
+            cardnum.push(i);
+            sum -= A[i];
+        }
+    }
+
+    cout << cardnum.size() << endl;
+
+    cout << cardnum.top();
+    cardnum.pop();
+
+    while(!cardnum.empty()){
+        printf(" %d", cardnum.top());
+        cardnum.pop();
+    }
+    cout << endl;
 }
