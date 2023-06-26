@@ -3,7 +3,7 @@
 #define _GLIBCXX_DEBUG
 #define rep(i, s, n) for (int i = s; i < (int)(n); i++)
 
-#define IMPOSSIBLE -1
+#define MAX_VALUE 100000 //= 100 x 1000
 
 using namespace std;
 
@@ -17,29 +17,31 @@ int main(){
         cin >> weight[i] >> value[i];
     }
 
-    int64_t tab[N+1][W+1];
+    int64_t tab[N+1][MAX_VALUE+1];
     tab[0][0] = 0;
-    rep(j, 1, W + 1){
-        // wi <= W　=> tab[N][wi] >= wi
-        tab[0][j] = IMPOSSIBLE;
+    rep(j, 1, MAX_VALUE + 1){
+        tab[0][j] = INT32_MAX;
     }
 
     rep(i, 1, N + 1){
-        rep(j, 0, W + 1){
-            if(j < weight[i]){
+        rep(j, 0, MAX_VALUE + 1){
+            if(j < value[i]){
                 tab[i][j] = tab[i-1][j];
             } else{
-                tab[i][j] = max(
+                tab[i][j] = min(
                     tab[i-1][j],
-                    tab[i-1][j - weight[i]] + value[i]);
+                    tab[i-1][j - value[i]] + weight[i]);
             }
         }
     }
 
-    int64_t maxv = 0;
-    rep(j, 0, W + 1){
-        maxv = max(maxv, tab[N][j]);
+    int32_t maxv = 0;
+    rep(j, 0, MAX_VALUE + 1){
+        if(tab[N][j] <= W && maxv < j){
+            maxv = j;
+        }
     }
 
+    // cout << maxv << endl;
     cout << maxv << endl;
 }
