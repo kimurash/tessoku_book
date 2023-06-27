@@ -20,6 +20,7 @@ int main(){
     int32_t B[N];
     int32_t old = -1, crrnt = 1;
     rep(i, 0, N){
+        //int pos = lower_bound(A, A + N, C[i]) - A;
         int pos = distance(A, find(A, A + N, C[i]));
 
         if(C[i] == old){
