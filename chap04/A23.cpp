@@ -21,7 +21,7 @@ int main(){
         }
     }
 
-    int16_t item_max = (int16_t)pow(2, N);
+    int16_t item_max = 1 << N;
 
     int tab[M+1][item_max];
     rep(i, 0, M + 1){
