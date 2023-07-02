@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 
 #define rep(i, s, n) for (int i = s; i < (int)(n); i++)
-#define MOD 1000000007
+#define MOD 1000'000'007
 
 using namespace std;
 
