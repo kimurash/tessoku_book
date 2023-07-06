@@ -33,12 +33,12 @@ int main(){
         }
     }
 
-    int32_t result = grundy[A[0]];
+    int32_t xor_sum = grundy[A[0]];
     rep(i, 1, N){
-        result ^= grundy[A[i]];
+        xor_sum ^= grundy[A[i]];
     }
 
-    if(result != 0){
+    if(xor_sum != 0){
         cout << "First" << endl;
     } else{
         cout << "Second" << endl;
