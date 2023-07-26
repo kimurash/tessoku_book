@@ -2,6 +2,7 @@
 #include <bits/stdc++.h>
 
 #define rep(i, s, n) for (int i = s; i <= (int)(n); i++)
+#define all(v) v.begin(), v.end()
 #define MAXNODE 100'009
 #define MAXCOST 10'000
 
@@ -9,7 +10,7 @@ using namespace std;
 
 typedef pair<int32_t, int32_t> pi32;
 
-int32_t dist[MAXNODE];
+int32_t dist[MAXNODE], before[MAXNODE];
 bool locked[MAXNODE];
 
 void dijkstra(vector<pi32> *adjlst);
@@ -28,18 +29,26 @@ int main() {
 
     rep(i, 1, N) {
         dist[i] = MAXCOST * MAXNODE;
+        before[i] = 0;
         locked[i] = false;
     }
 
     dijkstra(adjlst);
 
-    rep(i, 1, N) {
-        if(locked[i]){
-            cout << dist[i] << endl;
-        } else{
-            cout << -1 << endl;
-        }
+    int32_t crrnt = N;
+    vector<int32_t> path;
+    do{
+        path.push_back(crrnt);
+        crrnt = before[crrnt];
+    } while(crrnt > 0);
+
+    reverse(all(path));
+
+    cout << path[0];
+    rep(i, 1, path.size() - 1){
+        printf(" %d", path[i]);
     }
+    cout << endl;
 
     return (0);
 }
@@ -60,18 +69,16 @@ void dijkstra(vector<pi32> *adjlst) {
         dist[now] = mindist;
         locked[now] = true;
 
-        for (pi32 adj: adjlst[now]) {
-            int32_t to = adj.first;
-            int32_t w = adj.second;
-
-            if (locked[to]) {  // 確定済み
+        for (pi32 to: adjlst[now]) {
+            if (locked[to.first]) {  // 確定済み
                 continue;
             }
 
             // 隣接する頂点の距離を更新する
-            if (mindist + w < dist[to]) {
-                dist[to] = mindist + w;
-                Q.push(make_pair(dist[to], to));
+            if (mindist + to.second < dist[to.first]) {
+                dist[to.first] = mindist + to.second;
+                Q.push(make_pair(dist[to.first], to.first));
+                before[to.first] = now;
             }
         }
     }
