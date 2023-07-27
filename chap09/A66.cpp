@@ -25,7 +25,7 @@ public:
         }
     }
 
-    // 節uと節vが属するグループを統合する
+    // 節uと節vを統合する
     void unite(int32_t u, int32_t v){
         int32_t rootu = this->root(u);
         int32_t rootv = this->root(v);
