@@ -13,6 +13,7 @@ typedef int64_t i64;
 typedef pair<int32_t, int32_t> pi32;
 
 class UnionFind{
+private:
     int32_t parent[MAXNODE]; // 各頂点の親
     int32_t size[MAXNODE];   // 各頂点を根とする木の頂点数
 
