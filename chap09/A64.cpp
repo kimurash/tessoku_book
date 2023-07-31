@@ -27,6 +27,7 @@ int main() {
     }
 
     rep(i, 1, N) {
+        // 辺数の最大値 = 頂点数の最大値であるためMAXNODEで代替
         dist[i] = MAXCOST * MAXNODE;
         locked[i] = false;
     }
