@@ -21,7 +21,7 @@ typedef struct pqr{
 } PQR;
 
 typedef struct state{
-    i16 X[ELEMENT + 1];
+    i16 X[ELEMENT];
     i16 score; // 累積スコア
     char last_opr; // どの操作で遷移したか
     i16 last_rank; // どの順位から遷移したか
@@ -33,7 +33,7 @@ State beam[ITER + 1][WIDTH];
 
 void beam_search(i16 T);
 
-bool operator>(const State& a, const State& b){
+bool comp(const State& a, const State& b){
     return(a.score > b.score);
 }
 
@@ -51,20 +51,22 @@ int main(){
 
     // beamはscoreの降順にソートされているためbeam[T][0]のscoreが最大
     i16 crrnt = 0;
+    stack<char> answer;
     for(int t = T; t > 0; t--){
-        if(beam[t][crrnt].last_opr == 'A'){
-            cout << "A" << endl;
-        }else{
-            cout << "B" << endl;
-        }
+        answer.push(beam[t][crrnt].last_opr);
         crrnt = beam[t][crrnt].last_rank;
+    }
+
+    while(!answer.empty()){
+        cout << answer.top() << endl;
+        answer.pop();
     }
 
     return(0);
 }
 
 void beam_search(i16 T){
-    rep(i, 1, ELEMENT){
+    rep(i, 0, ELEMENT - 1){
         beam[0][0].X[i] = 0;
     }
     beam[0][0].score = 0;
@@ -75,37 +77,37 @@ void beam_search(i16 T){
         vector<State> candidate;
         rep(s, 0, num_state[t - 1] - 1){ // 1つ前の状態s
             // 操作Aで遷移した場合
-            State state_a = beam[t - 1][s];
-            state_a.X[pqr[t].p] += 1;
-            state_a.X[pqr[t].q] += 1;
-            state_a.X[pqr[t].r] += 1;
-            state_a.last_opr = 'A';
-            state_a.last_rank = s;
-            rep(i, 1, ELEMENT){
-                if(state_a.X[i] == 0){
-                    state_a.score += 1;
+            State A = beam[t - 1][s];
+            A.X[pqr[t].p] += 1;
+            A.X[pqr[t].q] += 1;
+            A.X[pqr[t].r] += 1;
+            A.last_opr = 'A';
+            A.last_rank = s;
+            rep(i, 0, ELEMENT - 1){
+                if(A.X[i] == 0){
+                    A.score += 1;
                 }
             }
 
             // 操作Bで遷移した場合
-            State state_b = beam[t - 1][s];
-            state_b.X[pqr[t].p] -= 1;
-            state_b.X[pqr[t].q] -= 1;
-            state_b.X[pqr[t].r] -= 1;
-            state_b.last_opr = 'B';
-            state_b.last_rank = s;
-            rep(i, 1, ELEMENT){
-                if(state_b.X[i] == 0){
-                    state_b.score += 1;
+            State B = beam[t - 1][s];
+            B.X[pqr[t].p] -= 1;
+            B.X[pqr[t].q] -= 1;
+            B.X[pqr[t].r] -= 1;
+            B.last_opr = 'B';
+            B.last_rank = s;
+            rep(i, 0, ELEMENT - 1){
+                if(B.X[i] == 0){
+                    B.score += 1;
                 }
             }
 
-            candidate.push_back(state_a);
-            candidate.push_back(state_b);
+            candidate.push_back(A);
+            candidate.push_back(B);
         }
 
         // 解候補をscoreの降順にソート
-        sort(all(candidate), greater<State>());
+        sort(all(candidate), comp);
 
         // 上位num_state[t]個の状態を記録する
         num_state[t] = min(WIDTH, (int)candidate.size());
