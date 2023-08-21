@@ -3,7 +3,6 @@
 #include <atcoder/modint>
 
 #define rep(i, s, n) for (int i = s; i <= (int)(n); i++)
-// #define all(v) v.begin(), v.end()
 
 using namespace std;
 using mint = atcoder::modint1000000007;
